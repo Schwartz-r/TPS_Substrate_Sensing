@@ -1,0 +1,13 @@
+REMARK * CHECK FOR MISSING ATOMS IN PROT                                              
+REMARK   DATE:     3/ 6/24     10:51: 2      CREATED BY USER: renanak                 
+ATOM   5249  P1  POP     1      11.910  11.076  49.982  1.00 19.89      COF1
+ATOM   5250  O1  POP     1      12.399  12.120  49.007  1.00 19.67      COF1
+ATOM   5251  O2  POP     1      10.521  10.589  49.589  1.00 17.43      COF1
+ATOM   5252  O3  POP     1      12.908   9.927  49.985  1.00 21.50      COF1
+ATOM   5253  O4  POP     1      11.814  11.528  51.574  1.00 25.51      COF1
+ATOM   5254  P2  POP     1      11.572  10.546  52.894  1.00 21.28      COF1
+ATOM   5255  O5  POP     1      11.474  11.234  54.253  1.00 19.47      COF1
+ATOM   5256  O6  POP     1      12.691   9.502  52.831  1.00 17.42      COF1
+ATOM   5257  O7  POP     1      10.245   9.872  52.591  1.00 18.34      COF1
+TER    6434      POP      1
+END

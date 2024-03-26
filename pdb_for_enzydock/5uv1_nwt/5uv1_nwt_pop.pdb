@@ -1,0 +1,19 @@
+ATOM      1  P2  POP A   1      -9.003  11.154 -22.629  1.00  0.00           P  
+ATOM      2  P1  POP A   1     -11.474   9.816 -22.728  1.00  0.00           P  
+ATOM      3  O5  POP A   1      -7.931  11.471 -21.474  1.00  0.00           O  
+ATOM      4  O6  POP A   1      -9.298  12.423 -23.392  1.00  0.00           O  
+ATOM      5  O3  POP A   1     -12.004  10.694 -23.838  1.00  0.00           O  
+ATOM      6  O7  POP A   1      -8.458  10.087 -23.549  1.00  0.00           O1-
+ATOM      7  O2  POP A   1     -10.854   8.564 -23.302  1.00  0.00           O1-
+ATOM      8  O4  POP A   1     -10.346  10.624 -21.915  1.00  0.00           O  
+ATOM      9  O1  POP A   1     -12.584   9.452 -21.771  1.00  0.00           O  
+CONECT    1    4    6    8    3
+CONECT    2    5    7    9    8
+CONECT    3    1
+CONECT    4    1
+CONECT    5    2
+CONECT    6    1
+CONECT    7    2
+CONECT    8    1    2
+CONECT    9    2
+END

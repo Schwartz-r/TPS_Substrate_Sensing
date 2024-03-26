@@ -1,0 +1,13 @@
+REMARK * CHECK FOR MISSING ATOMS IN PROT                                              
+REMARK   DATE:     3/ 6/24     10:51: 8      CREATED BY USER: renanak                 
+ATOM   8526  P1  POP     1     -15.073  14.250  21.497  1.00 46.05      COF1
+ATOM   8527  O1  POP     1     -15.387  15.193  20.361  1.00 44.43      COF1
+ATOM   8528  O2  POP     1     -13.782  14.673  22.153  1.00 41.02      COF1
+ATOM   8529  O3  POP     1     -16.188  14.291  22.513  1.00 45.96      COF1
+ATOM   8530  O4  POP     1     -14.775  12.642  21.135  1.00 42.55      COF1
+ATOM   8531  P2  POP     1     -14.205  11.421  22.157  1.00 40.50      COF1
+ATOM   8532  O5  POP     1     -13.875  10.058  21.604  1.00 42.85      COF1
+ATOM   8533  O6  POP     1     -15.238  11.256  23.245  1.00 53.27      COF1
+ATOM   8534  O7  POP     1     -12.957  12.059  22.722  1.00 40.94      COF1
+TER    9087      POP      1
+END

@@ -1,0 +1,7 @@
+REMARK * CHECK FOR MISSING ATOMS IN PROT                                              
+REMARK   DATE:     3/ 6/24     10:51: 0      CREATED BY USER: renanak                 
+ATOM   5488  MG  MG      1      61.530  28.949  52.392  1.00 52.98      COF2
+ATOM   5489  MG  MG      2      59.363  34.143  53.706  1.00 23.64      COF2
+ATOM   5490  MG  MG      3      62.017  30.195  48.811  1.00  0.00      COF2
+TER    6499      MG       3
+END
