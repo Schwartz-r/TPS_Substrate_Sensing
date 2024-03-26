@@ -20,8 +20,8 @@ Supporting Information for "Differential Substrate Sensing in Terpene Synthases 
 	initial pdb + topology + parameter + patch files for ligands used for docking with EnzyDock.
 	cc_ligands/…
 
--	PDB files for selected poses from EnzyDock runs
-	all_mm_best2_to_si/…
+- PDB files for selected poses from EnzyDock runs
+	all_mm_best/…
 
 - CSV file with energetic data from docking
 	all_mm_best2_to_si/all_poses.csv
