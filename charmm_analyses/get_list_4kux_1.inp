@@ -1,0 +1,83 @@
+** Read all_mm_min crd+psf and get list of atoms around the ligand
+*
+
+set topDIR /home/qnt/renanak/charmm/workspace/dock/git_enzydock/local_top
+
+set pdb 4kwd_his
+set boundO 1 ! or 5
+set case0 c15 ! or c10 or c20
+set case @case0-pop-@boundO
+
+bomlev  -1
+!read topology
+open read card unit 10 name @topDIR/top_all36_prot.rtf
+read rtf card unit 10 !append
+close unit 10
+
+!read parameters
+open read card unit 10 name @topDIR/par_all36_prot.prm
+read param card unit 10 flex !append
+close unit 10
+
+!read topology
+open read card unit 10 name @topDIR/top_all36_cgenff.rtf
+read rtf card unit 10 append
+close unit 10
+
+!read parameters
+open read card unit 10 name @topDIR/par_all36_cgenff.prm
+read param card unit 10 flex append
+close unit 10
+
+set topDIR /home/qnt/renanak/charmm/workspace/screen/uniq_sub/local_top
+
+!read cofactor and patch
+open read unit 10 card name @topDIR/tpsi_pop.rtf
+read rtf unit 10 card append
+close unit 10
+
+open read unit 10 card name @topDIR/tpsi_pop.prm
+read para unit 10 card flex append
+close unit 10
+
+set topDIR /home/qnt/renanak/charmm/workspace/dock/git_enzydock/local_top
+
+stream @topDIR/toppar_water_ions.str
+bomlev  0
+set ligpath /home/qnt/renanak/charmm/workspace/old_dock/cotb2_subring_3
+stream @ligpath/@case/local_top/ligand_1.str
+stream @ligpath/@case/local_top/ligand_1_pop_patch.str
+
+!!!
+!read psf + crd
+! Read in psf and structures
+set dir ../all_mm_best/@pdb
+open read card unit 1 name @dir/all_mm_mindock_1_pop-@boundO.psf
+read psf card unit 1
+close unit 1
+
+bomlev -1
+open read card unit 1 name @dir/all_mm_mindock_1_pop-@boundO.crd
+read coor card unit 1
+close unit 1
+
+bomlev 0
+scalar wmain = radius select all end
+! select relevant area to print
+define ligand sele segid ligand_1 show end
+
+define envi sele (ligand .around. 5.0) .and. (.not. ligand) show end
+
+scalar radius show sele ligand end
+scalar radius show sele envi end
+
+open unit 1 form write name @dir/ligand_pop-@boundO.pdb
+write coor pdb unit 1 sele ligand end
+close unit 1
+
+open unit 1 form write name @dir/envi_pop-@boundO.pdb
+write coor pdb unit 1 sele envi end
+close unit 1
+
+stop
+

@@ -1,0 +1,7 @@
+For electrostatic of the pocket:
+get_potential_1n21.inp
+
+For finding clashes:
+1.get_list_4kux_1.inp
+2. get_contacts.py
+3. get_res_contacts.py

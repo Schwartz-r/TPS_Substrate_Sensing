@@ -1,0 +1,324 @@
+** Read all_mm_min crd+psf and get list of atoms around the ligand
+*
+
+set topDIR ../local_top
+set resDIR ../results
+
+set prot 1n21
+
+bomlev  -1
+!read topology
+open read card unit 10 name @topDIR/top_all36_prot.rtf
+read rtf card unit 10
+close unit 10
+
+!read parameters
+open read card unit 10 name @topDIR/par_all36_prot.prm
+read param card unit 10 flex
+close unit 10
+
+!read topology
+open read card unit 10 name @topDIR/top_all36_cgenff.rtf
+read rtf card unit 10 append
+close unit 10
+
+!read parameters
+open read card unit 10 name @topDIR/par_all36_cgenff.prm
+read param card unit 10 flex append
+close unit 10
+
+!read cofactor and patch
+open read unit 10 card name @topDIR/tpsi_pop.rtf
+read rtf unit 10 card append
+close unit 10
+
+open read unit 10 card name @topDIR/tpsi_pop.prm
+read para unit 10 card flex append
+close unit 10
+
+stream @topDIR/toppar_water_ions.str
+bomlev  0
+
+set dir ../all_mm_best/@prot
+
+open unit 1 form read name @dir/@prot_withoutligand.psf
+read psf card unit 1 append
+close unit 1
+
+open read unit 1 form name @dir/@prot_withoutligand.crd
+read coor card unit 1
+close unit 1
+
+set dir ../../init_pdbs/@prot
+
+set NumObject ?nres
+open unit 1 form read name @dir/@prot_pop.pdb
+read sequ pdb unit 1
+generate COF1 first none last none setup
+rewind unit 1
+read coor pdb unit 1 offset @NumObject
+close unit 1
+
+set NumObject ?nres
+open unit 1 form read name @dir/@prot_mg.pdb
+read sequ pdb unit 1
+generate COF2 first none last none setup
+rewind unit 1
+read coor pdb unit 1 offset @NumObject
+close unit 1
+
+set NumObject ?nres
+open unit 1 form read name @dir/@prot_wat.pdb
+read sequ pdb unit 1
+generate WTIN first none last none setup
+rewind unit 1
+read coor pdb unit 1 offset @NumObject
+close unit 1
+
+hbuild
+
+set dir ../all_mm_best/@prot
+stream @dir/gridcenter.str
+
+define o1 select atom COF1 1 O1 end
+define o5 select atom COF1 1 O5 end
+
+coor stat sele o1 end
+set xo1 ?xave
+set yo1 ?yave
+set zo1 ?zave
+
+coor stat sele o5 end
+set xo5 ?xave
+set yo5 ?yave
+set zo5 ?zave
+
+read sequence card
+* Read seq of ions
+*
+1000
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+SOD SOD SOD SOD SOD SOD SOD SOD SOD SOD
+
+! Na Probe
+generate NAPR first none last none setup warn
+
+set mmeps 3.0       ! Dielectric constant in mm
+set mmdielec rdie   ! rdie or cdie
+set ctnb  15.0
+set ctfnb 14.0
+set ctonb 12.0
+set softoff soft emax 0.0 mine 0.0 maxe 0.0 vdwe elee
+
+nbonds atom eps @mmeps @mmdielec cutnb @ctnb ctofnb @ctfnb ctonnb @ctonb -
+       vswitch switch @softoff
+
+set par 15 !box of size 5 around grid center
+set sigmaH 1.34
+set Nion 1000
+set stepsize 0.1
+
+open write unit 33 form name @resDIR/@prot.csv
+write title unit 33
+*x,y,z,ele
+*
+
+set i 1
+label dummyloop
+    set xpos ?random
+    set ypos ?random
+    set zpos ?random
+    define probe sele atom NAPR @i sod end
+    coor set xdir @xpos ydir @ypos zdir @zpos sele probe show end
+incr i
+if @i .le. @Nion goto dummyloop
+
+scalar xcomp COPY RADIus
+
+set i 1
+label loop_pos_na
+
+  label get_pos
+    calc seed1 = int(?rand * 100000000)
+    calc seed2 = int(?rand * 10000000)
+    calc seed3 = int(?rand * 1000000)
+    calc seed4 = int(?rand * 100000)
+    random clcg uniform iseed @seed1 @seed2 @seed3 @seed4
+
+    calc xpos ?random - 0.5
+    calc ypos ?random - 0.5
+    calc zpos ?random - 0.5
+    calc xpos @par*@xpos+@bsitex
+    calc ypos @par*@ypos+@bsitey
+    calc zpos @par*@zpos+@bsitez
+
+    define probe sele atom NAPR @i sod end
+    coor set xdir @xpos ydir @ypos zdir @zpos sele probe show end
+    bomlev -1 ! allow no coors atoms
+    set fine notknown
+    set dist @sigmaH
+    label loop_detect
+      calc others = @dist - @sigmaH
+      ! atoms with large enough radius to interfere
+      define potential sele (.not. segid NAPR) .and. (prop radius .ge. @others) end
+      if ?nsel .eq. 0 then
+        set fine true
+      endif
+      define bump sele (probe .around. @dist) .and. potential end
+      if ?nsel .gt. 0 then
+        set fine false
+      endif
+      if @fine .ne. false then
+        ! look for atoms that were too far last round and are too small this round
+        calc others = @others - @stepsize
+        define potential sele (.not. segid NAPR) .and. (prop radius .ge. @others) end
+        define bump sele (probe .around. @dist) .and. potential end
+        ! now check for found atoms if they're too close or not
+        if ?nsel .le. 0 goto icontinue
+        label check_may_bump
+          define myatom sele atom ?SELSEGI ?SELRESI ?SELTYPE end
+          q sele probe end sele myatom end
+          set idist ?dist
+		  scalar xcomp copy radius
+		  coor stat comp sele myatom end
+		  set myrad ?xave
+		  calc bothrad = @myrad + @sigmaH
+		  if @idist .lt. @bothrad then
+		    set fine false
+		  endif
+		define bump sele (bump) .and. (.not. myatom) end
+		if ?nsel .le. 0 then
+		  goto icontinue
+		else
+          goto check_may_bump
+		endif
+      endif
+    label icontinue
+    incr dist by @stepsize
+    if @fine .eq. notknown goto loop_detect
+    bomlev 0
+    if @fine .eq. true then
+      coor set xdir @xpos ydir @ypos zdir @zpos sele probe show end
+      !update nonbond list
+      nbonds atom eps @mmeps @mmdielec cutnb @ctnb ctofnb @ctfnb ctonnb @ctonb -
+             vswitch switch @softoff
+      skipe all exclude elec
+      inte sele probe end sele .not. segid NAPR end
+      scalar wmain set ?ener sele probe end
+      
+      write title unit 33
+*@xpos,@ypos,@zpos,?ener
+*
+      incr i
+    endif
+
+if @i .le. @Nion goto loop_pos_na
+close unit 33
+
+open write unit 1 card name @resDIR/@prot_probes.pdb
+write coor unit 1 pdb sele segid NAPR end
+close unit 1
+
+open write unit 1 card name @resDIR/@prot_all.pdb
+write coor unit 1 pdb sele .not. (segid NAPR) end
+close unit 1
+
+stop
