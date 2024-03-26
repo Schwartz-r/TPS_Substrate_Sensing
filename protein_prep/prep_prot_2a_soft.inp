@@ -1,0 +1,108 @@
+* refine structure from modeller
+* RS 03/08/2023
+*
+
+bomlev 0
+set bomblevel 0
+wrnlev 10
+prnlev 5
+fast   on
+lower
+long
+
+!
+set proteinname 3m01
+set proteinname1 @proteinname_1
+set offset1 0
+set debug true
+set debugshow show
+set proteinunit 1
+set s soft2a
+!
+set softon soft emax 30.0 vdwe elee
+set softoff soft emax 0.0 mine 0.0 maxe 0.0 vdwe elee
+set eps 3.0         ! Dielectric constant in classical calc.
+set dielec rdie     ! rdie or cdie
+set ctnb  15.0
+set ctfnb 14.0
+set ctonb 12.0
+!
+stream ../stream/param.str
+
+stream @strDIR/top_prm_all.str
+
+! read
+open read unit 1 form name @psfDIR/@proteinname_whole.psf
+read psf card unit 1
+close unit 1
+
+open read unit 1 form name @crdDIR/@proteinname_whole.crd
+read coor card unit 1
+
+! define flexible area
+!elif prot=='3m01':
+!    gaps = [(4, 13), (523, 529)]
+!    gaps1.append((pair[0]-3-1,pair[1]+1+1))
+!define flex sele .byres. ires 520:530 show end
+define flex sele .byres. ires 519:533 show end
+
+cons fix select .not. flex end
+shake bonh tole 1.0e-6 select .not. hydrogen end -
+      select hydrogen end
+nbonds atom eps @eps @dielec cutnb @ctnb ctofnb @ctfnb ctonnb @ctonb -
+   vswitch switch @softon
+energy
+
+! mini (dyna mini)
+cons harm force 200.0 sele type O .or. type CA .or. type HN .or. type HA end
+mini abnr nsteps 50
+cons harm force 100.0 sele type O .or. type CA .or. type HN .or. type HA end
+mini abnr nsteps 50
+cons harm force 50.0 sele type O .or. type CA .or. type HN .or. type HA end
+mini abnr nsteps 50
+cons harm force 10.0 sele type O .or. type CA .or. type HN .or. type HA end
+mini abnr nsteps 50
+cons harm clear
+
+! (mini) dyna (mini)
+! Run some MD
+
+set Ti     50.00
+set Tf    300.00
+set NStep 10000!00
+set QRef  100.00   ! Found empirically to be best for current system
+
+open write formatted unit 10 name @scrDIR/@PDBFILE_@Tf.rst        ! write restart file
+
+cons harm force 50.0 sele (type O .or. type CA .or. type HN .or. type HA) and (ires 524:530) show end
+cons harm force 100.0 sele (type O .or. type CA .or. type HN .or. type HA) and (ires 519:523 .or. ires 531:533) show end
+
+dyna   vver strt nstep @NStep timestep 0.001 -
+       nose tref @Tf qref @QRef -
+       firstt @Ti finalt @Tf tstruc @Ti -
+       iasors 1 iasvel 1 iscvel 0 -
+       ntrfrq 100 nprint 100 nsavc 0 nsavv 0 ihbfrq 0 -
+       isvfrq 100 iprfrq 100 ihtfrq 0 ieqfrq 0 -
+       iunrea -9 iunwri 10 iuncrd -11 iunvel -12 kunit -13
+
+
+! Switch off soft potentials for final minimization
+nbonds atom eps @eps @dielec cutnb @ctnb ctofnb @ctfnb ctonnb @ctonb -
+   vswitch switch @softoff
+
+! (mini dyna) mini
+mini abnr nstep 500 nprint 100
+
+!
+open write unit 1 form name @psfDIR/@proteinname_wholei@s.psf
+write psf card unit 1
+
+open write unit 1 form name @pdbDIR/@proteinname_whole@s.pdb
+write coor pdb unit 1
+close unit 1
+
+open write unit 1 form name @crdDIR/@proteinname_whole@s.crd
+write coor card unit 1
+
+stop
+
